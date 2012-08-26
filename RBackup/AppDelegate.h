@@ -18,6 +18,8 @@
 @property (weak) IBOutlet NSTextField *OutputPath;
 - (IBAction)DoBackup:(id)sender;
 @property (weak) IBOutlet NSProgressIndicator *SpinWheel;
+@property (unsafe_unretained) IBOutlet NSTextView *textview;
+
 
 
 

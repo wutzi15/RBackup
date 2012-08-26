@@ -10,6 +10,7 @@
 
 @implementation AppDelegate
 @synthesize SpinWheel;
+@synthesize textview;
 @synthesize InputPath;
 @synthesize OutputPath;
 
@@ -73,11 +74,17 @@ NSString *OutString;
             // Do something with the filename.
             OutString = [[files objectAtIndex:i] path];
             NSLog(@"Out path: %@", OutString);
-            [InputPath setStringValue: OutString];
+            [OutputPath setStringValue: OutString];
         }
         
     }
 
+}
+
+- (void) copyData:(NSFileHandle*) handle
+{
+    NSString *string= [[NSString alloc]initWithData:[handle readDataToEndOfFile] encoding:NSASCIIStringEncoding ];
+    [textview setString:string];
 }
 
 - (IBAction)DoBackup:(id)sender
@@ -90,35 +97,31 @@ NSString *OutString;
         NSRunCriticalAlertPanel(@"Output Path empty!", @"Output Path cannot be emtpy. Please try again.", @"Ok", nil, nil);
         return;
     }
+    NSLog(@"Backing up from %@ to %@", InString, OutString);
     
     NSTask *task;
     task = [[NSTask alloc] init];
-    [task setLaunchPath: @"rsync"];
+    [task setLaunchPath: @"/usr/bin/rsync"];
     
-    NSArray *arguments;
-    arguments = [NSArray arrayWithObjects: @"-avz", @"--stats", @"-h","--progress", InString, OutString, nil];
-    [task setArguments: arguments];
+    
+    [task setArguments: [NSArray arrayWithObjects:@"-avz", @"--stats",@"-h",@"--progress",  InString , OutString, nil]];
+    
+
+    
+    
     
     NSPipe *pipe;
     pipe = [NSPipe pipe];
     [task setStandardOutput: pipe];
     
-    NSFileHandle *file;
-    file = [pipe fileHandleForReading];
+    NSFileHandle *handle;
+    handle = [pipe fileHandleForReading];
     
     [SpinWheel startAnimation:self];
     [task launch];
+    [NSThread detachNewThreadSelector:@selector(copyData) toTarget:self withObject:handle];
     [SpinWheel stopAnimation:self];
-    
-    NSData *data;
-    data = [file readDataToEndOfFile];
-    
-    NSString *string;
-    string = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-    NSLog (@"grep returned:\n%@", string);
-    
-    
-
+  
  
 }
 
