@@ -9,10 +9,19 @@
 #import "AppDelegate.h"
 
 @implementation AppDelegate
+@synthesize InputPath;
+@synthesize OutputPath;
+@synthesize DoBackup;
+
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     // Insert code here to initialize your application
 }
 
+- (IBAction)ChooseInputPath:(id)sender {
+}
+
+- (IBAction)ChooseOutputPath:(id)sender {
+}
 @end
