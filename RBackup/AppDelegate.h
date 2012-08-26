@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#define allTrim( object ) [object stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet] ]
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
@@ -15,7 +16,9 @@
 - (IBAction)ChooseOutputPath:(id)sender;
 @property (weak) IBOutlet NSTextField *InputPath;
 @property (weak) IBOutlet NSTextField *OutputPath;
-@property (weak) IBOutlet NSButton *DoBackup;
+- (IBAction)DoBackup:(id)sender;
+@property (weak) IBOutlet NSProgressIndicator *SpinWheel;
+
 
 
 @end
