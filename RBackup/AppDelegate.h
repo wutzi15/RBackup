@@ -20,7 +20,8 @@
 @property (weak) IBOutlet NSProgressIndicator *SpinWheel;
 @property (unsafe_unretained) IBOutlet NSTextView *textview;
 
-
+-(void) Save;
+-(void) Load;
 
 
 @end
